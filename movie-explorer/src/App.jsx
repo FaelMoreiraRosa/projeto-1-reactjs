@@ -1,5 +1,16 @@
 import { useEffect, useState } from "react";
+import {
+  Container,
+  Box,
+  CircularProgress,
+  Alert,
+  Typography,
+} from "@mui/material";
 import { buscarFilmes } from "./services/api";
+import Header from "./components/Header";
+import SearchBar from "./components/SearchBar";
+import MovieList from "./components/MovieList";
+import Filters from "./components/Filters";
 
 function App() {
   const [filmes, setFilmes] = useState([]);
@@ -14,31 +25,82 @@ function App() {
         setFilmes(dados);
       } catch (error) {
         setErro("Não foi possível carregar os filmes.");
-      } finally{
-      setCarregando(false);
+      } finally {
+        setCarregando(false);
       }
     }
 
     carregarFilmes();
   }, []);
+if (carregando) {
+  return (
+    <>
+      <Header />
 
-  if (carregando) {
-    return <p>Carregando filmes...</p>;
-  }
-
-  if (erro) {
-    return <p>{erro}</p>;
+      <Container>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            py: 8,
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      </Container>
+    </>
+  );
 }
 
+  if (erro) {
+  return (
+    <>
+      <Header />
+
+      <Container sx={{ py: 4 }}>
+        <Alert severity="error">
+          {erro}
+        </Alert>
+      </Container>
+    </>
+  );
+}
+
+if (filmes.length === 0) {
+  return (
+    <>
+      <Header />
+
+      <Container sx={{ py: 4 }}>
+        <Typography variant="h6">
+          Nenhum filme encontrado.
+        </Typography>
+      </Container>
+    </>
+  );
+}
 
   return (
-    <div>
-      <h1>Movie Explorer</h1>
+    <Box>
+      <Header />
 
-      {filmes.map((filme) => (
-        <p key={filme.id}>{filme.title}</p>
-      ))}
-    </div>
+      <Container maxWidth="xl">
+  <Box sx={{ py: 4 }}>
+    <Typography
+      variant="h4"
+      component="h1"
+      gutterBottom
+    >
+      Encontre seus filmes
+    </Typography>
+
+    <SearchBar />
+    <Filters />
+  </Box>
+
+  <MovieList filmes={filmes} />
+</Container>
+    </Box>
   );
 }
 
