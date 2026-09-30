@@ -4,6 +4,7 @@ import { buscarFilmes } from "./services/api";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import MovieList from "./components/MovieList";
+import Filters from "./components/Filters";
 
 function App() {
   const [filmes, setFilmes] = useState([]);
@@ -75,10 +76,10 @@ if (filmes.length === 0) {
       <Header />
 
       <Container sx={{ py: 4 }}>
-        <SearchBar />
-
-        <MovieList filmes={filmes} />
-      </Container>
+  <SearchBar />
+  <Filters />
+  <MovieList filmes={filmes} />
+</Container>
     </Box>
   );
 }

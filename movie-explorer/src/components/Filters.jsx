@@ -13,9 +13,7 @@ function Filters() {
         mb: 3,
       }}
     >
-      <InputLabel>
-        Ordenar por
-      </InputLabel>
+      <InputLabel>Ordenar por</InputLabel>
 
       <Select
         label="Ordenar por"
