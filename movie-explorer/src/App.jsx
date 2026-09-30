@@ -55,6 +55,21 @@ if (carregando) {
   );
 }
 
+if (filmes.length === 0) {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "50vh",
+      }}
+    >
+      <p>Nenhum filme encontrado.</p>
+    </Box>
+  );
+}
+
   return (
     <Box>
       <Header />
