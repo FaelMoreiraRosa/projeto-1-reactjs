@@ -12,6 +12,10 @@ function MovieCard({ filme }) {
     ? `https://image.tmdb.org/t/p/w500${filme.poster_path}`
     : "";
 
+  const dataLancamento = filme.release_date
+    ? new Date(filme.release_date).toLocaleDateString("pt-BR")
+    : "Data não informada";
+
   return (
     <Card
       sx={{
@@ -43,7 +47,14 @@ function MovieCard({ filme }) {
           variant="body2"
           color="text.secondary"
         >
-          ⭐ {filme.vote_average}
+          ⭐ {filme.vote_average.toFixed(1)}
+        </Typography>
+
+        <Typography
+          variant="body2"
+          color="text.secondary"
+        >
+          Lançamento: {dataLancamento}
         </Typography>
       </CardContent>
 
