@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Container, Box } from "@mui/material";
 import { buscarFilmes } from "./services/api";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
@@ -34,13 +35,15 @@ function App() {
   }
 
   return (
-    <div>
+    <Box>
       <Header />
 
-      <SearchBar />
+      <Container sx={{ py: 4 }}>
+        <SearchBar />
 
-      <MovieList filmes={filmes} />
-    </div>
+        <MovieList filmes={filmes} />
+      </Container>
+    </Box>
   );
 }
 
