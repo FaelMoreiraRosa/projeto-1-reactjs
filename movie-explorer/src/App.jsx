@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Container, Box } from "@mui/material";
+import { Container, Box, CircularProgress } from "@mui/material";
 import { buscarFilmes } from "./services/api";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
@@ -25,10 +25,20 @@ function App() {
 
     carregarFilmes();
   }, []);
-
-  if (carregando) {
-    return <p>Carregando filmes...</p>;
-  }
+if (carregando) {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "50vh",
+      }}
+    >
+      <CircularProgress />
+    </Box>
+  );
+}
 
   if (erro) {
     return <p>{erro}</p>;
