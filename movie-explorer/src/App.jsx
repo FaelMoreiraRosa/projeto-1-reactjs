@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { Container, Box, CircularProgress } from "@mui/material";
+import {
+  Container,
+  Box,
+  CircularProgress,
+  Alert,
+  Typography,
+} from "@mui/material";
 import { buscarFilmes } from "./services/api";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
@@ -28,46 +34,49 @@ function App() {
   }, []);
 if (carregando) {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "50vh",
-      }}
-    >
-      <CircularProgress />
-    </Box>
+    <>
+      <Header />
+
+      <Container>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            py: 8,
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      </Container>
+    </>
   );
 }
 
   if (erro) {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "50vh",
-      }}
-    >
-      <p>{erro}</p>
-    </Box>
+    <>
+      <Header />
+
+      <Container sx={{ py: 4 }}>
+        <Alert severity="error">
+          {erro}
+        </Alert>
+      </Container>
+    </>
   );
 }
 
 if (filmes.length === 0) {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "50vh",
-      }}
-    >
-      <p>Nenhum filme encontrado.</p>
-    </Box>
+    <>
+      <Header />
+
+      <Container sx={{ py: 4 }}>
+        <Typography variant="h6">
+          Nenhum filme encontrado.
+        </Typography>
+      </Container>
+    </>
   );
 }
 
@@ -75,9 +84,20 @@ if (filmes.length === 0) {
     <Box>
       <Header />
 
-      <Container sx={{ py: 4 }}>
-  <SearchBar />
-  <Filters />
+      <Container maxWidth="xl">
+  <Box sx={{ py: 4 }}>
+    <Typography
+      variant="h4"
+      component="h1"
+      gutterBottom
+    >
+      Encontre seus filmes
+    </Typography>
+
+    <SearchBar />
+    <Filters />
+  </Box>
+
   <MovieList filmes={filmes} />
 </Container>
     </Box>
