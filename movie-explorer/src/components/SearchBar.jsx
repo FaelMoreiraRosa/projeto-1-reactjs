@@ -1,6 +1,6 @@
 import { TextField, Button, Box } from "@mui/material";
 
-function SearchBar() {
+function SearchBar({ pesquisa, onPesquisa }) {
   return (
     <Box
       sx={{
@@ -14,6 +14,8 @@ function SearchBar() {
         label="Pesquisar filme"
         variant="outlined"
         fullWidth
+        value={pesquisa}
+        onChange={(event) => onPesquisa(event.target.value)}
       />
 
       <Button variant="contained">
