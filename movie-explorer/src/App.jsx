@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Container,
   Box,
@@ -16,6 +16,7 @@ function App() {
   const [filmes, setFilmes] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState(null);
+  const [pesquisa, setPesquisa] = useState("");
 
   useEffect(() => {
     async function carregarFilmes() {
@@ -32,6 +33,19 @@ function App() {
 
     carregarFilmes();
   }, []);
+
+  const filmesFiltrados = useMemo(() => {
+    const termo = pesquisa.trim().toLowerCase();
+    let resultado = [...filmes];
+
+    if (termo) {
+      resultado = resultado.filter((filme) =>
+        filme.title.toLowerCase().includes(termo),
+      );
+    }
+
+    return resultado;
+  }, [filmes, pesquisa]);
 if (carregando) {
   return (
     <>
@@ -66,20 +80,6 @@ if (carregando) {
   );
 }
 
-if (filmes.length === 0) {
-  return (
-    <>
-      <Header />
-
-      <Container sx={{ py: 4 }}>
-        <Typography variant="h6">
-          Nenhum filme encontrado.
-        </Typography>
-      </Container>
-    </>
-  );
-}
-
   return (
     <Box>
       <Header />
@@ -94,11 +94,15 @@ if (filmes.length === 0) {
       Encontre seus filmes
     </Typography>
 
-    <SearchBar />
+    <SearchBar pesquisa={pesquisa} onPesquisa={setPesquisa} />
     <Filters />
   </Box>
 
-  <MovieList filmes={filmes} />
+  {filmesFiltrados.length === 0 ? (
+    <Typography variant="h6">Nenhum filme encontrado.</Typography>
+  ) : (
+    <MovieList filmes={filmesFiltrados} />
+  )}
 </Container>
     </Box>
   );
