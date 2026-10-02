@@ -17,6 +17,7 @@ function App() {
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState(null);
   const [pesquisa, setPesquisa] = useState("");
+  const [ordenacao, setOrdenacao] = useState("maiorNota");
 
   useEffect(() => {
     async function carregarFilmes() {
@@ -44,8 +45,20 @@ function App() {
       );
     }
 
+    if (ordenacao === "maiorNota") {
+      resultado.sort((a, b) => b.vote_average - a.vote_average);
+    }
+
+    if (ordenacao === "menorNota") {
+      resultado.sort((a, b) => a.vote_average - b.vote_average);
+    }
+
+    if (ordenacao === "nome") {
+      resultado.sort((a, b) => a.title.localeCompare(b.title));
+    }
+
     return resultado;
-  }, [filmes, pesquisa]);
+  }, [filmes, pesquisa, ordenacao]);
 if (carregando) {
   return (
     <>
@@ -95,7 +108,7 @@ if (carregando) {
     </Typography>
 
     <SearchBar pesquisa={pesquisa} onPesquisa={setPesquisa} />
-    <Filters />
+    <Filters ordenacao={ordenacao} onOrdenacao={setOrdenacao} />
   </Box>
 
   {filmesFiltrados.length === 0 ? (
