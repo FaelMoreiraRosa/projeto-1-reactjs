@@ -18,6 +18,7 @@ function App() {
   const [erro, setErro] = useState(null);
   const [pesquisa, setPesquisa] = useState("");
   const [ordenacao, setOrdenacao] = useState("maiorNota");
+  const [, setFilmeSelecionado] = useState(null);
 
   useEffect(() => {
     async function carregarFilmes() {
@@ -59,6 +60,11 @@ function App() {
 
     return resultado;
   }, [filmes, pesquisa, ordenacao]);
+
+  function abrirDetalhes(filme) {
+    setFilmeSelecionado(filme);
+  }
+
 if (carregando) {
   return (
     <>
@@ -114,7 +120,7 @@ if (carregando) {
   {filmesFiltrados.length === 0 ? (
     <Typography variant="h6">Nenhum filme encontrado.</Typography>
   ) : (
-    <MovieList filmes={filmesFiltrados} />
+    <MovieList filmes={filmesFiltrados} onDetalhes={abrirDetalhes} />
   )}
 </Container>
     </Box>

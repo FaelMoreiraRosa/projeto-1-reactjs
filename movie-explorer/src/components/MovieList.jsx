@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import MovieCard from "./MovieCard";
 
-function MovieList({ filmes }) {
+function MovieList({ filmes, onDetalhes }) {
   return (
     <Grid
       container
@@ -17,7 +17,7 @@ function MovieList({ filmes }) {
             lg: 3,
           }}
         >
-          <MovieCard filme={filme} />
+          <MovieCard filme={filme} onDetalhes={onDetalhes} />
         </Grid>
       ))}
     </Grid>

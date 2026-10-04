@@ -7,7 +7,7 @@ import {
   Box,
 } from "@mui/material";
 
-function MovieCard({ filme }) {
+function MovieCard({ filme, onDetalhes }) {
   const poster = filme.poster_path
     ? `https://image.tmdb.org/t/p/w500${filme.poster_path}`
     : "";
@@ -62,6 +62,7 @@ function MovieCard({ filme }) {
         <Button
           variant="contained"
           fullWidth
+          onClick={() => onDetalhes(filme)}
         >
           Ver detalhes
         </Button>
