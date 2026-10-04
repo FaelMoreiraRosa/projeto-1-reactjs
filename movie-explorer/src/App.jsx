@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Container,
   Box,
@@ -11,11 +11,15 @@ import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import MovieList from "./components/MovieList";
 import Filters from "./components/Filters";
+import MovieModal from "./components/MovieModal";
 
 function App() {
   const [filmes, setFilmes] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState(null);
+  const [pesquisa, setPesquisa] = useState("");
+  const [ordenacao, setOrdenacao] = useState("maiorNota");
+  const [filmeSelecionado, setFilmeSelecionado] = useState(null);
 
   useEffect(() => {
     async function carregarFilmes() {
@@ -32,6 +36,40 @@ function App() {
 
     carregarFilmes();
   }, []);
+
+  const filmesFiltrados = useMemo(() => {
+    const termo = pesquisa.trim().toLowerCase();
+    let resultado = [...filmes];
+
+    if (termo) {
+      resultado = resultado.filter((filme) =>
+        filme.title.toLowerCase().includes(termo),
+      );
+    }
+
+    if (ordenacao === "maiorNota") {
+      resultado.sort((a, b) => b.vote_average - a.vote_average);
+    }
+
+    if (ordenacao === "menorNota") {
+      resultado.sort((a, b) => a.vote_average - b.vote_average);
+    }
+
+    if (ordenacao === "nome") {
+      resultado.sort((a, b) => a.title.localeCompare(b.title));
+    }
+
+    return resultado;
+  }, [filmes, pesquisa, ordenacao]);
+
+  function abrirDetalhes(filme) {
+    setFilmeSelecionado(filme);
+  }
+
+  function fecharDetalhes() {
+    setFilmeSelecionado(null);
+  }
+
 if (carregando) {
   return (
     <>
@@ -66,20 +104,6 @@ if (carregando) {
   );
 }
 
-if (filmes.length === 0) {
-  return (
-    <>
-      <Header />
-
-      <Container sx={{ py: 4 }}>
-        <Typography variant="h6">
-          Nenhum filme encontrado.
-        </Typography>
-      </Container>
-    </>
-  );
-}
-
   return (
     <Box>
       <Header />
@@ -94,11 +118,21 @@ if (filmes.length === 0) {
       Encontre seus filmes
     </Typography>
 
-    <SearchBar />
-    <Filters />
+    <SearchBar pesquisa={pesquisa} onPesquisa={setPesquisa} />
+    <Filters ordenacao={ordenacao} onOrdenacao={setOrdenacao} />
   </Box>
 
-  <MovieList filmes={filmes} />
+  {filmesFiltrados.length === 0 ? (
+    <Typography variant="h6">Nenhum filme encontrado.</Typography>
+  ) : (
+    <MovieList filmes={filmesFiltrados} onDetalhes={abrirDetalhes} />
+  )}
+
+  <MovieModal
+    filme={filmeSelecionado}
+    aberto={filmeSelecionado !== null}
+    onFechar={fecharDetalhes}
+  />
 </Container>
     </Box>
   );

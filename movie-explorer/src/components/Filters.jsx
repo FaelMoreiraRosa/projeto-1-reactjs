@@ -5,7 +5,7 @@ import {
   MenuItem,
 } from "@mui/material";
 
-function Filters() {
+function Filters({ ordenacao, onOrdenacao }) {
   return (
     <FormControl
       sx={{
@@ -17,7 +17,8 @@ function Filters() {
 
       <Select
         label="Ordenar por"
-        value=""
+        value={ordenacao}
+        onChange={(event) => onOrdenacao(event.target.value)}
       >
         <MenuItem value="maiorNota">
           Maior nota
