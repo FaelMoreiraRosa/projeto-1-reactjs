@@ -11,6 +11,7 @@ import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import MovieList from "./components/MovieList";
 import Filters from "./components/Filters";
+import MovieModal from "./components/MovieModal";
 
 function App() {
   const [filmes, setFilmes] = useState([]);
@@ -18,7 +19,7 @@ function App() {
   const [erro, setErro] = useState(null);
   const [pesquisa, setPesquisa] = useState("");
   const [ordenacao, setOrdenacao] = useState("maiorNota");
-  const [, setFilmeSelecionado] = useState(null);
+  const [filmeSelecionado, setFilmeSelecionado] = useState(null);
 
   useEffect(() => {
     async function carregarFilmes() {
@@ -63,6 +64,10 @@ function App() {
 
   function abrirDetalhes(filme) {
     setFilmeSelecionado(filme);
+  }
+
+  function fecharDetalhes() {
+    setFilmeSelecionado(null);
   }
 
 if (carregando) {
@@ -122,6 +127,12 @@ if (carregando) {
   ) : (
     <MovieList filmes={filmesFiltrados} onDetalhes={abrirDetalhes} />
   )}
+
+  <MovieModal
+    filme={filmeSelecionado}
+    aberto={filmeSelecionado !== null}
+    onFechar={fecharDetalhes}
+  />
 </Container>
     </Box>
   );
